@@ -1,0 +1,11 @@
+node_modules/
+.next/
+dist/
+build/
+.venv/
+__pycache__/
+*.pyc
+*.db
+.env
+backend/static/invoices/*.pdf
+node-write-test.tmp
