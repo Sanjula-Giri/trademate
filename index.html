@@ -1,609 +1,809 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeMate AI — Business OS for Tradespeople</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans)}
-.app{display:flex;height:100vh;min-height:600px;background:var(--surface-0);font-size:14px}
-.sidebar{width:200px;flex-shrink:0;background:var(--surface-1);border-right:0.5px solid var(--border);display:flex;flex-direction:column;padding:16px 0}
-.logo{display:flex;align-items:center;gap:8px;padding:0 16px 20px;border-bottom:0.5px solid var(--border);margin-bottom:8px}
-.logo-mark{width:28px;height:28px;border-radius:8px;background:#2a78d6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
-.logo-text{font-size:14px;font-weight:500;color:var(--text-primary)}
-.logo-sub{font-size:10px;color:var(--text-muted)}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;color:var(--text-secondary);font-size:13px;transition:background 0.1s;border-radius:0}
-.nav-item:hover{background:var(--surface-2);color:var(--text-primary)}
-.nav-item.active{background:var(--bg-accent);color:var(--text-accent);font-weight:500}
-.nav-item i{font-size:16px;width:18px}
-.nav-section{font-size:10px;color:var(--text-muted);padding:12px 16px 4px;letter-spacing:0.05em;text-transform:uppercase}
-.badge{background:var(--bg-danger);color:var(--text-danger);font-size:10px;padding:2px 6px;border-radius:10px;margin-left:auto}
-.badge-warn{background:var(--bg-warning);color:var(--text-warning)}
-.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
-.topbar{display:flex;align-items:center;padding:12px 20px;border-bottom:0.5px solid var(--border);background:var(--surface-2);gap:12px}
-.topbar-title{font-size:15px;font-weight:500;color:var(--text-primary);flex:1}
-.topbar-date{font-size:12px;color:var(--text-muted)}
-.btn{padding:6px 14px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:var(--surface-2);color:var(--text-primary);cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}
-.btn:hover{background:var(--surface-1)}
-.btn-primary{background:#2a78d6;border-color:#2a78d6;color:#fff}
-.btn-primary:hover{background:#185fa5}
-.content{flex:1;overflow-y:auto;padding:20px}
-.tab-bar{display:flex;gap:0;border-bottom:0.5px solid var(--border);margin-bottom:20px}
-.tab{padding:8px 16px;font-size:13px;color:var(--text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-0.5px}
-.tab:hover{color:var(--text-primary)}
-.tab.active{color:#2a78d6;border-bottom-color:#2a78d6;font-weight:500}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.grid-3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px}
-.metric-card{background:var(--surface-1);border-radius:var(--radius);padding:14px;position:relative}
-.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.metric-value{font-size:22px;font-weight:500;color:var(--text-primary)}
-.metric-delta{font-size:11px;margin-top:4px}
-.delta-up{color:var(--text-success)}
-.delta-down{color:var(--text-danger)}
-.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:16px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:13px;font-weight:500;color:var(--text-primary)}
-.job-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
-.job-row:last-child{border-bottom:none}
-.job-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+:root{
+  --lime:#c8f135;
+  --dark:#0f1f17;
+  --forest:#1a3a2a;
+  --mid:#2a5a3a;
+  --white:#f4f9f0;
+  --gray:#8aab96;
+  --card:#152a1e;
+  --border:#2a5a3a;
+  --text:#c8dece;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(15,31,23,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,241,53,0.08)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
+.nav-logo-dot{width:28px;height:28px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center}
+.nav-logo-dot svg{width:14px;height:14px}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:14px;color:var(--gray);text-decoration:none;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{display:flex;gap:12px;align-items:center}
+.btn-outline{padding:9px 22px;border:1.5px solid var(--border);border-radius:100px;font-size:14px;font-weight:600;color:var(--white);background:transparent;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-outline:hover{border-color:var(--lime);color:var(--lime)}
+.btn-lime{padding:9px 22px;border-radius:100px;font-size:14px;font-weight:700;color:var(--dark);background:var(--lime);border:none;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-lime:hover{background:#d8ff45;transform:translateY(-1px)}
+.btn-lime svg{width:14px;height:14px}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding:120px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,241,53,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(200,241,53,0.1);border:1px solid rgba(200,241,53,0.25);border-radius:100px;font-size:12px;font-weight:600;color:var(--lime);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px}
+h1 em{font-style:normal;color:var(--lime)}
+.hero-sub{font-size:17px;color:var(--gray);line-height:1.7;margin-bottom:36px;max-width:480px}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.hero-actions .btn-lime{padding:14px 28px;font-size:15px;border-radius:100px}
+.hero-actions .btn-outline{padding:14px 28px;font-size:15px}
+.hero-proof{display:flex;gap:32px;margin-top:48px;padding-top:40px;border-top:1px solid var(--border)}
+.proof-item{display:flex;flex-direction:column}
+.proof-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--lime)}
+.proof-label{font-size:12px;color:var(--gray);margin-top:2px}
+
+/* ── LIVE DASHBOARD (hero right) ── */
+.hero-visual{position:relative}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:0 24px 80px rgba(0,0,0,0.5)}
+.dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.dash-title{font-size:13px;font-weight:700;color:var(--white)}
+.live-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(200,241,53,0.12);border-radius:100px;font-size:11px;font-weight:600;color:var(--lime)}
+.live-pill span{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:pulse 1.5s infinite}
+.dash-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--forest);border-radius:12px;padding:12px}
+.metric-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
+.metric-lbl{font-size:10px;color:var(--gray);margin-top:2px}
+.metric-delta{font-size:10px;color:var(--lime);margin-top:4px}
+.jobs-list{display:flex;flex-direction:column;gap:8px}
+.job-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--forest);border-radius:10px;animation:slideIn .4s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+.job-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .job-info{flex:1;min-width:0}
-.job-name{font-size:13px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.job-meta{font-size:11px;color:var(--text-muted)}
-.status-pill{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:500;flex-shrink:0}
-.s-pending{background:var(--bg-warning);color:var(--text-warning)}
-.s-progress{background:var(--bg-accent);color:var(--text-accent)}
-.s-done{background:var(--bg-success);color:var(--text-success)}
-.s-urgent{background:var(--bg-danger);color:var(--text-danger)}
-.ai-panel{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;display:flex;flex-direction:column;height:360px}
-.ai-header{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:8px}
-.ai-dot{width:8px;height:8px;border-radius:50%;background:#1baf7a}
-.ai-msgs{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:85%;font-size:13px;line-height:1.5;padding:8px 12px;border-radius:10px}
-.msg-ai{background:var(--surface-1);color:var(--text-primary);align-self:flex-start;border-radius:2px 10px 10px 10px}
-.msg-user{background:#2a78d6;color:#fff;align-self:flex-end;border-radius:10px 2px 10px 10px}
-.ai-input{display:flex;gap:8px;padding:10px 12px;border-top:0.5px solid var(--border)}
-.ai-input input{flex:1;background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text-primary)}
-.ai-input button{padding:8px 14px;background:#2a78d6;color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-size:13px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
-.cal-day{text-align:center;font-size:11px;color:var(--text-muted);padding:4px 0}
-.cal-cell{height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:12px;cursor:pointer;position:relative;color:var(--text-secondary)}
-.cal-cell:hover{background:var(--surface-1)}
-.cal-cell.has-jobs::after{content:'';width:4px;height:4px;border-radius:50%;background:#2a78d6;position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
-.cal-cell.today{background:#2a78d6;color:#fff;font-weight:500}
-.cal-cell.today::after{background:#fff}
-.cal-cell.other-month{color:var(--text-muted);opacity:0.4}
-.inv-row{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border);font-size:13px}
-.inv-row:last-child{border-bottom:none}
-.inv-num{color:var(--text-muted);font-size:11px}
-.page{display:none}
-.page.active{display:block}
-.route-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:4px 10px;border-radius:10px;background:var(--bg-success);color:var(--text-success)}
-.customer-row{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border)}
-.customer-row:last-child{border-bottom:none}
-.search-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);margin-bottom:14px}
-.search-bar input{border:none;background:transparent;flex:1;font-size:13px;color:var(--text-primary);outline:none}
-.mini-stat{display:flex;flex-direction:column;align-items:center;padding:10px;background:var(--surface-1);border-radius:var(--radius)}
-.mini-stat-v{font-size:18px;font-weight:500;color:var(--text-primary)}
-.mini-stat-l{font-size:10px;color:var(--text-muted);margin-top:2px;text-align:center}
-.progress-bar{height:6px;background:var(--surface-1);border-radius:3px;overflow:hidden;margin-top:8px}
-.progress-fill{height:100%;border-radius:3px}
+.job-name{font-size:12px;font-weight:600;color:var(--white)}
+.job-sub{font-size:10px;color:var(--gray)}
+.job-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px}
+.b-progress{background:rgba(200,241,53,0.15);color:var(--lime)}
+.b-pending{background:rgba(255,193,7,0.15);color:#ffc107}
+.b-done{background:rgba(34,197,94,0.15);color:#22c55e}
+.b-urgent{background:rgba(239,68,68,0.15);color:#ef4444}
+.ai-bubble{position:absolute;bottom:-16px;left:-20px;background:var(--lime);border-radius:16px;padding:12px 16px;max-width:200px;box-shadow:0 8px 32px rgba(200,241,53,0.3)}
+.ai-bubble-text{font-size:11px;font-weight:700;color:var(--dark);line-height:1.4}
+.ai-bubble::after{content:'';position:absolute;bottom:-6px;left:20px;width:12px;height:12px;background:var(--lime);clip-path:polygon(0 0,100% 0,0 100%)}
+
+/* ── TICKER ── */
+.ticker{background:var(--lime);padding:14px 0;overflow:hidden;position:relative}
+.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 30s linear infinite}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--dark)}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--dark);opacity:.4}
+
+/* ── ABOUT ── */
+.about{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-imgs{position:relative;height:440px}
+.about-img-main{position:absolute;left:0;top:0;width:68%;height:76%;border-radius:20px;object-fit:cover;background:var(--forest);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.about-img-main img{width:100%;height:100%;object-fit:cover;border-radius:20px}
+.about-img-sec{position:absolute;right:0;bottom:0;width:52%;height:56%;border-radius:20px;object-fit:cover;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.about-img-sec img{width:100%;height:100%;object-fit:cover;border-radius:20px}
+.about-badge{position:absolute;right:28%;top:50%;transform:translateY(-50%);background:var(--lime);border-radius:50%;width:72px;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;box-shadow:0 8px 24px rgba(200,241,53,0.4)}
+.about-badge-text{font-size:9px;font-weight:800;color:var(--dark);text-align:center;line-height:1.2;text-transform:uppercase}
+.section-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--lime);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px}
+.section-eyebrow::before{content:'';width:24px;height:2px;background:var(--lime);border-radius:2px}
+h2{font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,48px);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
+h2 em{font-style:normal;color:var(--lime)}
+.section-sub{font-size:16px;color:var(--gray);line-height:1.7;margin-bottom:32px}
+.skills-list{display:flex;flex-direction:column;gap:16px;margin-bottom:36px}
+.skill-item{}
+.skill-header{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--white);margin-bottom:6px}
+.skill-pct{color:var(--lime)}
+.skill-bar{height:6px;background:var(--forest);border-radius:3px;overflow:hidden}
+.skill-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--lime),#a0c820);transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* ── SERVICES ── */
+.services{padding:100px 48px;background:var(--forest)}
+.services-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px}
+.services-grid{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px}
+.svc-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden}
+.svc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,241,53,.06),transparent);opacity:0;transition:opacity .25s}
+.svc-card:hover{border-color:var(--lime);transform:translateY(-4px)}
+.svc-card:hover::before{opacity:1}
+.svc-card.featured{background:var(--lime);border-color:var(--lime)}
+.svc-card.featured .svc-icon{background:rgba(15,31,23,.15)}
+.svc-card.featured .svc-title{color:var(--dark)}
+.svc-card.featured .svc-desc{color:rgba(15,31,23,.75)}
+.svc-card.featured .svc-link{color:var(--dark);border-color:rgba(15,31,23,.3)}
+.svc-card.featured .svc-img-wrap{border-color:rgba(15,31,23,.2)}
+.svc-icon{width:44px;height:44px;border-radius:10px;background:var(--forest);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
+.svc-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:8px}
+.svc-desc{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:20px}
+.svc-img-wrap{height:140px;border-radius:12px;border:1px solid var(--border);background:var(--forest);overflow:hidden;margin-bottom:16px}
+.svc-img-wrap img{width:100%;height:100%;object-fit:cover}
+.svc-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--lime);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(200,241,53,.3);transition:gap .2s}
+.svc-link:hover{gap:10px}
+.svc-link svg{width:14px;height:14px}
+
+/* ── WHY US ── */
+.why{padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.why-img{border-radius:20px;background:var(--card);height:460px;position:relative;overflow:hidden;border:1px solid var(--border)}
+.why-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.why-img img{width:100%;height:100%;object-fit:cover}
+.why-badge{position:absolute;bottom:24px;left:24px;background:var(--lime);border-radius:16px;padding:16px 20px}
+.why-badge-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--dark)}
+.why-badge-label{font-size:11px;font-weight:600;color:rgba(15,31,23,.7);margin-top:2px}
+.why-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.why-feat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;transition:border-color .2s}
+.why-feat:hover{border-color:var(--lime)}
+.why-feat-icon{width:40px;height:40px;border-radius:10px;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.why-feat-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px}
+.why-feat-desc{font-size:12px;color:var(--gray);line-height:1.6}
+
+/* ── PROCESS ── */
+.process{padding:100px 48px;background:var(--forest)}
+.process-head{text-align:center;margin-bottom:64px}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process-steps::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--lime),var(--lime),var(--lime),transparent);opacity:.3}
+.step{text-align:center;padding:0 16px;position:relative}
+.step-num{width:64px;height:64px;border-radius:50%;background:var(--card);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--lime);position:relative;z-index:1;transition:all .3s}
+.step:hover .step-num{background:var(--lime);color:var(--dark);border-color:var(--lime);transform:scale(1.1)}
+.step-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.step-desc{font-size:13px;color:var(--gray);line-height:1.6}
+
+/* ── TESTIMONIALS ── */
+.testimonials{padding:100px 48px}
+.testi-head{text-align:center;margin-bottom:56px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;transition:border-color .2s}
+.testi-card:hover{border-color:var(--lime)}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px}
+.testi-stars span{color:var(--lime);font-size:14px}
+.testi-quote{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:24px;font-style:italic}
+.testi-quote::before{content:'"';color:var(--lime);font-size:28px;font-family:'Syne',sans-serif;line-height:0;vertical-align:-10px;margin-right:4px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--lime);border:1.5px solid var(--border)}
+.testi-name{font-size:13px;font-weight:700;color:var(--white)}
+.testi-role{font-size:11px;color:var(--gray)}
+
+/* ── PRICING ── */
+.pricing{padding:100px 48px;background:var(--forest)}
+.pricing-head{text-align:center;margin-bottom:56px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:960px;margin:0 auto}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;transition:transform .25s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured-plan{background:var(--lime);border-color:var(--lime)}
+.popular-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--dark);color:var(--lime);font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;border:1px solid var(--lime);white-space:nowrap}
+.price-plan{font-size:13px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.featured-plan .price-plan{color:rgba(15,31,23,.7)}
+.price-amount{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--white);margin-bottom:4px}
+.featured-plan .price-amount{color:var(--dark)}
+.price-amount sup{font-size:18px;vertical-align:top;margin-top:8px;display:inline-block}
+.price-period{font-size:13px;color:var(--gray);margin-bottom:24px}
+.featured-plan .price-period{color:rgba(15,31,23,.6)}
+.price-features{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:10px}
+.price-features li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text)}
+.featured-plan .price-features li{color:rgba(15,31,23,.85)}
+.price-features li::before{content:'✓';font-size:11px;font-weight:800;color:var(--lime);background:rgba(200,241,53,.15);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.featured-plan .price-features li::before{background:rgba(15,31,23,.15);color:var(--dark)}
+.btn-plan{width:100%;padding:12px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;border:1.5px solid var(--border);background:transparent;color:var(--white)}
+.btn-plan:hover{border-color:var(--lime);color:var(--lime)}
+.featured-plan .btn-plan{background:var(--dark);border-color:var(--dark);color:var(--lime)}
+.featured-plan .btn-plan:hover{background:var(--forest)}
+
+/* ── CTA ── */
+.cta-section{padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(200,241,53,0.06) 0%,transparent 70%);pointer-events:none}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.cta-inner h2{font-size:clamp(36px,5vw,60px);margin-bottom:20px}
+.cta-inner p{font-size:17px;color:var(--gray);margin-bottom:40px;line-height:1.7}
+.cta-form{display:flex;gap:10px;max-width:460px;margin:0 auto}
+.cta-form input{flex:1;padding:14px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--card);color:var(--white);font-size:14px;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif}
+.cta-form input:focus{border-color:var(--lime)}
+.cta-form input::placeholder{color:var(--gray)}
+.cta-form .btn-lime{padding:14px 24px;white-space:nowrap;flex-shrink:0;font-family:'Inter',sans-serif}
+.cta-note{font-size:12px;color:var(--gray);margin-top:14px}
+
+/* ── FOOTER ── */
+footer{padding:60px 48px 32px;border-top:1px solid var(--border)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand p{font-size:13px;color:var(--gray);line-height:1.7;margin-top:12px;max-width:240px}
+.footer-col h4{font-size:13px;font-weight:700;color:var(--white);margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{font-size:13px;color:var(--gray);text-decoration:none;transition:color .2s}
+.footer-col ul li a:hover{color:var(--lime)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;border-top:1px solid var(--border)}
+.footer-bottom p{font-size:12px;color:var(--gray)}
+.footer-social{display:flex;gap:12px}
+.social-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gray);text-decoration:none;font-size:13px;transition:all .2s}
+.social-btn:hover{border-color:var(--lime);color:var(--lime)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:40px}
+  .hero-visual{display:none}
+  .about,.why{grid-template-columns:1fr;padding:60px 24px;gap:40px}
+  .about-imgs{height:300px}
+  .services{padding:60px 24px}
+  .services-head{flex-direction:column;gap:20px;align-items:flex-start}
+  .services-grid{grid-template-columns:1fr}
+  .process{padding:60px 24px}
+  .process-steps{grid-template-columns:1fr 1fr;gap:40px}
+  .process-steps::before{display:none}
+  .testi-grid{grid-template-columns:1fr;padding:0 24px}
+  .testimonials{padding:60px 24px}
+  .pricing{padding:60px 24px}
+  .pricing-grid{grid-template-columns:1fr}
+  .cta-section{padding:60px 24px}
+  .cta-form{flex-direction:column}
+  footer{padding:40px 24px 24px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+}
 </style>
+</head>
+<body>
 
-<h2 class="sr-only">TradeMate AI — business management dashboard for tradespeople</h2>
-
-<div class="app">
-  <div class="sidebar">
-    <div class="logo">
-      <div class="logo-mark"><i class="ti ti-bolt" aria-hidden="true"></i></div>
-      <div>
-        <div class="logo-text">TradeMate</div>
-        <div class="logo-sub">AI assistant</div>
-      </div>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-dot">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0f1f17" stroke-width="3" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
     </div>
-    <div class="nav-section">Main</div>
-    <div class="nav-item active" onclick="showPage('dashboard',this)"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</div>
-    <div class="nav-item" onclick="showPage('jobs',this)"><i class="ti ti-tool" aria-hidden="true"></i>Jobs <span class="badge">3</span></div>
-    <div class="nav-item" onclick="showPage('calendar',this)"><i class="ti ti-calendar" aria-hidden="true"></i>Calendar</div>
-    <div class="nav-item" onclick="showPage('customers',this)"><i class="ti ti-users" aria-hidden="true"></i>Customers</div>
-    <div class="nav-section">Finance</div>
-    <div class="nav-item" onclick="showPage('invoices',this)"><i class="ti ti-file-invoice" aria-hidden="true"></i>Invoices <span class="badge badge-warn">2</span></div>
-    <div class="nav-item" onclick="showPage('analytics',this)"><i class="ti ti-chart-bar" aria-hidden="true"></i>Analytics</div>
-    <div class="nav-section">AI</div>
-    <div class="nav-item" onclick="showPage('assistant',this)"><i class="ti ti-message-dots" aria-hidden="true"></i>AI assistant</div>
-    <div style="margin-top:auto;padding:12px 16px;border-top:0.5px solid var(--border);margin-top:16px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-accent)">RK</div>
-        <div>
-          <div style="font-size:12px;font-weight:500;color:var(--text-primary)">Ravi Kumar</div>
-          <div style="font-size:10px;color:var(--text-muted)">Electrician</div>
-        </div>
-      </div>
+    TradeMate AI
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-outline">Log in</a>
+    <a href="#cta" class="btn-lime">
+      Get started
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span></span>
+      AI-powered · Built for India's tradespeople
+    </div>
+    <h1>Run your trade<br>like a <em>real business</em></h1>
+    <p class="hero-sub">TradeMate AI handles your calls, books jobs, sends invoices, and reminds customers — so you can stay on the tools, not the phone.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-lime">
+        Start free trial
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#services" class="btn-outline">See what it does</a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item"><span class="proof-num">3k+</span><span class="proof-label">Jobs managed</span></div>
+      <div class="proof-item"><span class="proof-num">₹0</span><span class="proof-label">API cost (runs local)</span></div>
+      <div class="proof-item"><span class="proof-num">7 days</span><span class="proof-label">To build the MVP</span></div>
+      <div class="proof-item"><span class="proof-num">4.9★</span><span class="proof-label">Average rating</span></div>
     </div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <div class="topbar-title" id="page-title">Dashboard</div>
-      <div class="topbar-date"><i class="ti ti-calendar" aria-hidden="true"></i> Sat, 27 Jun 2026</div>
-      <button class="btn btn-primary" onclick="sendPrompt('Open the TradeMate AI interactive prototype and tell me how I can build this app')"><i class="ti ti-plus" aria-hidden="true"></i> New job ↗</button>
+  <div class="hero-visual">
+    <div class="dash-card">
+      <div class="dash-topbar">
+        <span class="dash-title">Today's operations</span>
+        <span class="live-pill"><span></span> Live</span>
+      </div>
+      <div class="dash-metrics">
+        <div class="metric">
+          <div class="metric-val">₹87k</div>
+          <div class="metric-lbl">June revenue</div>
+          <div class="metric-delta">↑ 18% vs May</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">4</div>
+          <div class="metric-lbl">Jobs today</div>
+          <div class="metric-delta">Next at 10 AM</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">68%</div>
+          <div class="metric-lbl">Repeat customers</div>
+          <div class="metric-delta">↑ +5% this month</div>
+        </div>
+      </div>
+      <div class="jobs-list" id="jobs-list">
+        <div class="job-item">
+          <div class="job-avatar" style="background:#1a3a4a;color:#79c0ff">AS</div>
+          <div class="job-info">
+            <div class="job-name">Amit Sharma · Panel repair</div>
+            <div class="job-sub">10:00 AM · Rajouri Garden</div>
+          </div>
+          <span class="job-badge b-progress">In progress</span>
+        </div>
+        <div class="job-item">
+          <div class="job-avatar" style="background:#3a2a1a;color:#fbbf24">PG</div>
+          <div class="job-info">
+            <div class="job-name">Priya Gupta · New wiring</div>
+            <div class="job-sub">12:30 PM · Karol Bagh</div>
+          </div>
+          <span class="job-badge b-pending">Pending</span>
+        </div>
+        <div class="job-item">
+          <div class="job-avatar" style="background:#3a1a1a;color:#f87171">SJ</div>
+          <div class="job-info">
+            <div class="job-name">Suresh Jain · Power outage ⚡</div>
+            <div class="job-sub">2:00 PM · Rohini · PRIORITY</div>
+          </div>
+          <span class="job-badge b-urgent">Urgent</span>
+        </div>
+        <div class="job-item">
+          <div class="job-avatar" style="background:#1a3a2a;color:#4ade80">MB</div>
+          <div class="job-info">
+            <div class="job-name">Meena Bajaj · MCB fitting</div>
+            <div class="job-sub">4:30 PM · Pitampura</div>
+          </div>
+          <span class="job-badge b-done">Scheduled</span>
+        </div>
+      </div>
     </div>
-
-    <div class="content">
-
-      <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
-        <div class="tab-bar">
-          <div class="tab active">Overview</div>
-          <div class="tab">Today's schedule</div>
-          <div class="tab">Alerts</div>
-        </div>
-        <div class="grid-4">
-          <div class="metric-card">
-            <div class="metric-label"><i class="ti ti-currency-rupee" aria-hidden="true" style="font-size:14px"></i>Revenue (Jun)</div>
-            <div class="metric-value">₹87,400</div>
-            <div class="metric-delta delta-up"><i class="ti ti-trending-up" aria-hidden="true"></i> +18% vs May</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label"><i class="ti ti-tool" aria-hidden="true" style="font-size:14px"></i>Jobs this month</div>
-            <div class="metric-value">34</div>
-            <div class="metric-delta delta-up"><i class="ti ti-trending-up" aria-hidden="true"></i> 6 pending</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label"><i class="ti ti-clock" aria-hidden="true" style="font-size:14px"></i>Today's jobs</div>
-            <div class="metric-value">4</div>
-            <div class="metric-delta" style="color:var(--text-muted)">Next: 10:00 AM</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label"><i class="ti ti-users" aria-hidden="true" style="font-size:14px"></i>Repeat customers</div>
-            <div class="metric-value">68%</div>
-            <div class="metric-delta delta-up"><i class="ti ti-trending-up" aria-hidden="true"></i> +5% vs last month</div>
-          </div>
-        </div>
-
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Today's jobs</div>
-              <div class="route-badge"><i class="ti ti-map-pin" aria-hidden="true"></i> Route optimised</div>
-            </div>
-            <div class="job-row">
-              <div class="job-avatar" style="background:var(--bg-accent);color:var(--text-accent)">AS</div>
-              <div class="job-info">
-                <div class="job-name">Amit Sharma</div>
-                <div class="job-meta">10:00 AM · Panel repair · Rajouri Garden</div>
-              </div>
-              <span class="status-pill s-progress">In progress</span>
-            </div>
-            <div class="job-row">
-              <div class="job-avatar" style="background:#faeeda;color:#854f0b">PG</div>
-              <div class="job-info">
-                <div class="job-name">Priya Gupta</div>
-                <div class="job-meta">12:30 PM · New wiring · Karol Bagh</div>
-              </div>
-              <span class="status-pill s-pending">Pending</span>
-            </div>
-            <div class="job-row">
-              <div class="job-avatar" style="background:var(--bg-danger);color:var(--text-danger)">SJ</div>
-              <div class="job-info">
-                <div class="job-name">Suresh Jain · URGENT</div>
-                <div class="job-meta">2:00 PM · Power outage · Rohini</div>
-              </div>
-              <span class="status-pill s-urgent">Priority</span>
-            </div>
-            <div class="job-row">
-              <div class="job-avatar" style="background:var(--bg-success);color:var(--text-success)">MB</div>
-              <div class="job-info">
-                <div class="job-name">Meena Bajaj</div>
-                <div class="job-meta">4:30 PM · MCB fitting · Pitampura</div>
-              </div>
-              <span class="status-pill s-pending">Pending</span>
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:16px">
-            <div class="card" style="padding:14px">
-              <div class="card-title" style="margin-bottom:12px">AI insights</div>
-              <div style="background:var(--bg-accent);border-radius:8px;padding:10px;margin-bottom:8px">
-                <div style="font-size:12px;font-weight:500;color:var(--text-accent)"><i class="ti ti-route" aria-hidden="true"></i> Schedule tip</div>
-                <div style="font-size:12px;color:var(--text-accent);margin-top:4px;opacity:0.85">3 of today's jobs are in West Delhi. Consider batching them to save 40 min travel.</div>
-              </div>
-              <div style="background:var(--bg-warning);border-radius:8px;padding:10px">
-                <div style="font-size:12px;font-weight:500;color:var(--text-warning)"><i class="ti ti-package" aria-hidden="true"></i> Stock alert</div>
-                <div style="font-size:12px;color:var(--text-warning);margin-top:4px;opacity:0.85">MCB switches (16A) — only 2 left. Reorder before Monday.</div>
-              </div>
-            </div>
-            <div class="card" style="padding:14px">
-              <div class="card-title" style="margin-bottom:10px">Monthly target</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Revenue — ₹87,400 of ₹1,00,000</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:87%;background:#2a78d6"></div></div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:8px;margin-bottom:4px">Jobs — 34 of 40</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:85%;background:#1baf7a"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Recent activity</div>
-            <button class="btn" onclick="showPage('jobs',document.querySelector('.nav-item:nth-child(5)'))">View all</button>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-            <div style="padding:10px;background:var(--surface-1);border-radius:var(--radius)">
-              <div style="font-size:11px;color:var(--text-muted)">Yesterday — Arun Mehta</div>
-              <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:2px">Fan installation</div>
-              <div style="font-size:12px;color:var(--text-success);margin-top:4px">₹2,500 · Paid</div>
-            </div>
-            <div style="padding:10px;background:var(--surface-1);border-radius:var(--radius)">
-              <div style="font-size:11px;color:var(--text-muted)">25 Jun — Kavita Singh</div>
-              <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:2px">Inverter servicing</div>
-              <div style="font-size:12px;color:var(--text-warning);margin-top:4px">₹3,800 · Pending</div>
-            </div>
-            <div style="padding:10px;background:var(--surface-1);border-radius:var(--radius)">
-              <div style="font-size:11px;color:var(--text-muted)">24 Jun — Ramesh Verma</div>
-              <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-top:2px">Rewiring (3BHK)</div>
-              <div style="font-size:12px;color:var(--text-success);margin-top:4px">₹12,000 · Paid</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- JOBS -->
-      <div class="page" id="page-jobs">
-        <div class="tab-bar">
-          <div class="tab active">All jobs</div>
-          <div class="tab">Pending</div>
-          <div class="tab">In progress</div>
-          <div class="tab">Completed</div>
-        </div>
-        <div class="search-bar">
-          <i class="ti ti-search" aria-hidden="true" style="color:var(--text-muted)"></i>
-          <input type="text" placeholder="Search jobs, customers, addresses…">
-        </div>
-        <div class="card">
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border-strong);font-size:11px;color:var(--text-muted);font-weight:500">
-            <div></div><div>Customer & job</div><div>Date</div><div>Location</div><div>Amount</div><div>Status</div>
-          </div>
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border)">
-            <div class="job-avatar" style="background:var(--bg-danger);color:var(--text-danger);width:32px;height:32px;font-size:11px">SJ</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Suresh Jain</div><div style="font-size:11px;color:var(--text-muted)">Power outage fix</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today 2:00 PM</div>
-            <div style="font-size:12px;color:var(--text-secondary)">Rohini</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹4,500</div>
-            <span class="status-pill s-urgent">Priority</span>
-          </div>
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border)">
-            <div class="job-avatar" style="background:var(--bg-accent);color:var(--text-accent);width:32px;height:32px;font-size:11px">AS</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Amit Sharma</div><div style="font-size:11px;color:var(--text-muted)">Panel repair</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today 10:00 AM</div>
-            <div style="font-size:12px;color:var(--text-secondary)">Rajouri Garden</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹3,200</div>
-            <span class="status-pill s-progress">In progress</span>
-          </div>
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border)">
-            <div class="job-avatar" style="background:#faeeda;color:#854f0b;width:32px;height:32px;font-size:11px">PG</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Priya Gupta</div><div style="font-size:11px;color:var(--text-muted)">New wiring</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today 12:30 PM</div>
-            <div style="font-size:12px;color:var(--text-secondary)">Karol Bagh</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹8,000</div>
-            <span class="status-pill s-pending">Pending</span>
-          </div>
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border)">
-            <div class="job-avatar" style="background:var(--bg-success);color:var(--text-success);width:32px;height:32px;font-size:11px">MB</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Meena Bajaj</div><div style="font-size:11px;color:var(--text-muted)">MCB fitting</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today 4:30 PM</div>
-            <div style="font-size:12px;color:var(--text-secondary)">Pitampura</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹1,800</div>
-            <span class="status-pill s-pending">Pending</span>
-          </div>
-          <div style="display:grid;grid-template-columns:36px 1fr 100px 90px 80px 90px;gap:12px;align-items:center;padding:10px 0">
-            <div class="job-avatar" style="background:var(--bg-success);color:var(--text-success);width:32px;height:32px;font-size:11px">AM</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Arun Mehta</div><div style="font-size:11px;color:var(--text-muted)">Fan installation</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">26 Jun</div>
-            <div style="font-size:12px;color:var(--text-secondary)">Dwarka</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹2,500</div>
-            <span class="status-pill s-done">Completed</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CALENDAR -->
-      <div class="page" id="page-calendar">
-        <div class="grid-2" style="margin-bottom:0">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">June 2026</div>
-              <div style="display:flex;gap:4px">
-                <button class="btn" style="padding:4px 8px"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
-                <button class="btn" style="padding:4px 8px"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
-              </div>
-            </div>
-            <div class="cal-grid">
-              <div class="cal-day">Sun</div><div class="cal-day">Mon</div><div class="cal-day">Tue</div><div class="cal-day">Wed</div><div class="cal-day">Thu</div><div class="cal-day">Fri</div><div class="cal-day">Sat</div>
-            </div>
-            <div class="cal-grid" id="cal-cells"></div>
-          </div>
-          <div class="card">
-            <div class="card-title" style="margin-bottom:12px">Schedule for 27 Jun</div>
-            <div class="job-row">
-              <div style="font-size:11px;color:var(--text-muted);width:52px;flex-shrink:0">10:00 AM</div>
-              <div style="flex:1;background:var(--bg-accent);border-left:3px solid #2a78d6;padding:6px 10px;border-radius:0 6px 6px 0">
-                <div style="font-size:12px;font-weight:500;color:var(--text-accent)">Amit Sharma — Panel repair</div>
-                <div style="font-size:11px;color:var(--text-accent);opacity:0.7">Rajouri Garden · ~2h</div>
-              </div>
-            </div>
-            <div class="job-row">
-              <div style="font-size:11px;color:var(--text-muted);width:52px;flex-shrink:0">12:30 PM</div>
-              <div style="flex:1;background:#faeeda;border-left:3px solid #eda100;padding:6px 10px;border-radius:0 6px 6px 0">
-                <div style="font-size:12px;font-weight:500;color:#854f0b">Priya Gupta — New wiring</div>
-                <div style="font-size:11px;color:#854f0b;opacity:0.7">Karol Bagh · ~3h</div>
-              </div>
-            </div>
-            <div class="job-row">
-              <div style="font-size:11px;color:var(--text-muted);width:52px;flex-shrink:0">2:00 PM</div>
-              <div style="flex:1;background:var(--bg-danger);border-left:3px solid #e34948;padding:6px 10px;border-radius:0 6px 6px 0">
-                <div style="font-size:12px;font-weight:500;color:var(--text-danger)">Suresh Jain — Power outage ⚡</div>
-                <div style="font-size:11px;color:var(--text-danger);opacity:0.7">Rohini · Priority</div>
-              </div>
-            </div>
-            <div class="job-row" style="border-bottom:none">
-              <div style="font-size:11px;color:var(--text-muted);width:52px;flex-shrink:0">4:30 PM</div>
-              <div style="flex:1;background:var(--bg-success);border-left:3px solid #1baf7a;padding:6px 10px;border-radius:0 6px 6px 0">
-                <div style="font-size:12px;font-weight:500;color:var(--text-success)">Meena Bajaj — MCB fitting</div>
-                <div style="font-size:11px;color:var(--text-success);opacity:0.7">Pitampura · ~1h</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CUSTOMERS -->
-      <div class="page" id="page-customers">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-          <div style="display:flex;gap:8px">
-            <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text-secondary)"><b style="color:var(--text-primary);font-weight:500">142</b> customers</div>
-            <div style="background:var(--bg-success);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text-success)"><b style="font-weight:500">97</b> active</div>
-          </div>
-          <button class="btn btn-primary"><i class="ti ti-user-plus" aria-hidden="true"></i> Add customer</button>
-        </div>
-        <div class="search-bar">
-          <i class="ti ti-search" aria-hidden="true" style="color:var(--text-muted)"></i>
-          <input type="text" placeholder="Search by name, phone, or address…">
-        </div>
-        <div class="card">
-          <div style="display:grid;grid-template-columns:36px 1fr 110px 80px 90px;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border-strong);font-size:11px;color:var(--text-muted);font-weight:500">
-            <div></div><div>Name & contact</div><div>Last job</div><div>Spent</div><div>Status</div>
-          </div>
-          <div class="customer-row" style="grid-template-columns:36px 1fr 110px 80px 90px">
-            <div class="job-avatar" style="background:var(--bg-accent);color:var(--text-accent);width:32px;height:32px;font-size:11px">AS</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Amit Sharma</div><div style="font-size:11px;color:var(--text-muted)">+91 98100 11223 · Rajouri Garden</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹18,400</div>
-            <span class="status-pill s-progress">Active</span>
-          </div>
-          <div class="customer-row" style="grid-template-columns:36px 1fr 110px 80px 90px">
-            <div class="job-avatar" style="background:#e1f5ee;color:#0f6e56;width:32px;height:32px;font-size:11px">RV</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Ramesh Verma</div><div style="font-size:11px;color:var(--text-muted)">+91 99998 44321 · Janakpuri</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">24 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹31,200</div>
-            <span class="status-pill s-done">VIP</span>
-          </div>
-          <div class="customer-row" style="grid-template-columns:36px 1fr 110px 80px 90px">
-            <div class="job-avatar" style="background:#faeeda;color:#854f0b;width:32px;height:32px;font-size:11px">KS</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Kavita Singh</div><div style="font-size:11px;color:var(--text-muted)">+91 97112 88765 · Ashok Vihar</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">25 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹9,800</div>
-            <span class="status-pill s-pending">Pending</span>
-          </div>
-          <div class="customer-row" style="grid-template-columns:36px 1fr 110px 80px 90px;border-bottom:none">
-            <div class="job-avatar" style="background:var(--bg-danger);color:var(--text-danger);width:32px;height:32px;font-size:11px">SJ</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Suresh Jain</div><div style="font-size:11px;color:var(--text-muted)">+91 95555 00001 · Rohini</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">Today</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹6,500</div>
-            <span class="status-pill s-urgent">Priority</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- INVOICES -->
-      <div class="page" id="page-invoices">
-        <div class="grid-4" style="margin-bottom:16px">
-          <div class="metric-card"><div class="metric-label">Total billed</div><div class="metric-value">₹1.4L</div><div class="metric-delta" style="color:var(--text-muted)">This month</div></div>
-          <div class="metric-card"><div class="metric-label">Collected</div><div class="metric-value">₹87,400</div><div class="metric-delta delta-up">62%</div></div>
-          <div class="metric-card"><div class="metric-label">Pending</div><div class="metric-value">₹52,600</div><div class="metric-delta delta-down">38% unpaid</div></div>
-          <div class="metric-card"><div class="metric-label">Overdue</div><div class="metric-value">₹11,200</div><div class="metric-delta delta-down">2 invoices</div></div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Invoices</div>
-            <button class="btn btn-primary"><i class="ti ti-file-plus" aria-hidden="true"></i> Generate invoice</button>
-          </div>
-          <div style="display:grid;grid-template-columns:80px 1fr 90px 90px 80px;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border-strong);font-size:11px;color:var(--text-muted);font-weight:500">
-            <div>Invoice #</div><div>Customer</div><div>Date</div><div>Amount</div><div>Status</div>
-          </div>
-          <div class="inv-row" style="grid-template-columns:80px 1fr 90px 90px 80px">
-            <div style="font-size:12px;color:var(--text-muted)">#INV-034</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Amit Sharma</div><div style="font-size:11px;color:var(--text-muted)">Panel repair</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">27 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹3,200</div>
-            <span class="status-pill s-pending">Pending</span>
-          </div>
-          <div class="inv-row" style="grid-template-columns:80px 1fr 90px 90px 80px">
-            <div style="font-size:12px;color:var(--text-muted)">#INV-033</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Ramesh Verma</div><div style="font-size:11px;color:var(--text-muted)">Rewiring (3BHK)</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">24 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹12,000</div>
-            <span class="status-pill s-done">Paid</span>
-          </div>
-          <div class="inv-row" style="grid-template-columns:80px 1fr 90px 90px 80px">
-            <div style="font-size:12px;color:var(--text-muted)">#INV-031</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Kavita Singh</div><div style="font-size:11px;color:var(--text-muted)">Inverter service</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">25 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-primary)">₹3,800</div>
-            <span class="status-pill s-pending">Pending</span>
-          </div>
-          <div class="inv-row" style="grid-template-columns:80px 1fr 90px 90px 80px;border-bottom:none">
-            <div style="font-size:12px;color:var(--text-muted)">#INV-028</div>
-            <div><div style="font-size:13px;font-weight:500;color:var(--text-primary)">D.K. Exports</div><div style="font-size:11px;color:var(--text-muted)">Industrial wiring</div></div>
-            <div style="font-size:12px;color:var(--text-secondary)">10 Jun</div>
-            <div style="font-size:12px;font-weight:500;color:var(--text-danger)">₹11,200</div>
-            <span class="status-pill s-urgent">Overdue</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ANALYTICS -->
-      <div class="page" id="page-analytics">
-        <div class="grid-4" style="margin-bottom:16px">
-          <div class="metric-card"><div class="metric-label">Avg job value</div><div class="metric-value">₹4,850</div><div class="metric-delta delta-up">+₹320 vs May</div></div>
-          <div class="metric-card"><div class="metric-label">Jobs / week avg</div><div class="metric-value">8.5</div><div class="metric-delta delta-up">+1.2 vs last month</div></div>
-          <div class="metric-card"><div class="metric-label">Response time</div><div class="metric-value">18 min</div><div class="metric-delta delta-down">Target: 10 min</div></div>
-          <div class="metric-card"><div class="metric-label">Customer rating</div><div class="metric-value">4.8 ★</div><div class="metric-delta delta-up">Based on 67 reviews</div></div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px">Revenue — last 6 months</div>
-            <div style="position:relative;height:200px"><canvas id="rev-chart" role="img" aria-label="Bar chart showing monthly revenue from January to June 2026">Revenue data: Jan 52k, Feb 61k, Mar 58k, Apr 71k, May 74k, Jun 87k</canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px">Top services this month</div>
-            <div style="display:flex;flex-direction:column;gap:10px">
-              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text-secondary)">New wiring</span><span style="font-weight:500;color:var(--text-primary)">12 jobs · ₹28,400</span></div><div class="progress-bar"><div class="progress-fill" style="width:88%;background:#2a78d6"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text-secondary)">Panel / MCB work</span><span style="font-weight:500;color:var(--text-primary)">9 jobs · ₹22,100</span></div><div class="progress-bar"><div class="progress-fill" style="width:68%;background:#1baf7a"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text-secondary)">Fan / AC fitting</span><span style="font-weight:500;color:var(--text-primary)">7 jobs · ₹14,200</span></div><div class="progress-bar"><div class="progress-fill" style="width:44%;background:#eda100"></div></div></div>
-              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text-secondary)">Emergency repair</span><span style="font-weight:500;color:var(--text-primary)">6 jobs · ₹22,700</span></div><div class="progress-bar"><div class="progress-fill" style="width:70%;background:#e34948"></div></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AI ASSISTANT -->
-      <div class="page" id="page-assistant">
-        <div class="grid-2" style="align-items:start">
-          <div>
-            <div class="ai-panel">
-              <div class="ai-header">
-                <div class="ai-dot"></div>
-                <div style="font-size:13px;font-weight:500;color:var(--text-primary)">TradeMate AI</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-left:4px">powered by Ollama (Gemma 3)</div>
-              </div>
-              <div class="ai-msgs" id="chat-msgs">
-                <div class="msg msg-ai">Good morning, Ravi! You have 4 jobs today. Your first appointment — Amit Sharma — starts in 45 minutes in Rajouri Garden.</div>
-                <div class="msg msg-ai">Suresh Jain called about a power outage. I've marked it as a priority and scheduled it at 2:00 PM. Want me to send him a confirmation?</div>
-                <div class="msg msg-user">Yes, send the confirmation. Also what's the best route today?</div>
-                <div class="msg msg-ai">Confirmation sent to Suresh. For today's route, I suggest: Rajouri Garden → Karol Bagh → Rohini → Pitampura. This saves roughly 38 minutes compared to booking order. Three of your jobs are in West Delhi — batching them cuts travel time significantly.</div>
-              </div>
-              <div class="ai-input">
-                <input type="text" id="chat-input" placeholder="Ask about jobs, customers, pricing…" onkeydown="if(event.key==='Enter')sendChat()">
-                <button onclick="sendChat()"><i class="ti ti-send" aria-hidden="true"></i></button>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div class="card" style="padding:14px">
-              <div class="card-title" style="margin-bottom:10px">Quick ask</div>
-              <div style="display:flex;flex-direction:column;gap:6px">
-                <button class="btn" style="text-align:left;width:100%;justify-content:flex-start" onclick="askAI('How much should I charge for rewiring a 2BHK?')">How much for rewiring a 2BHK? ↗</button>
-                <button class="btn" style="text-align:left;width:100%;justify-content:flex-start" onclick="askAI('Which customers have outstanding payments?')">Which customers owe payment? ↗</button>
-                <button class="btn" style="text-align:left;width:100%;justify-content:flex-start" onclick="askAI('Book an appointment for next Monday at 11 AM')">Book appointment next Monday ↗</button>
-                <button class="btn" style="text-align:left;width:100%;justify-content:flex-start" onclick="askAI('Generate invoice for Amit Sharma')">Generate Amit\'s invoice ↗</button>
-              </div>
-            </div>
-            <div class="card" style="padding:14px">
-              <div class="card-title" style="margin-bottom:10px">AI receptionist</div>
-              <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">Missed calls are auto-replied with your availability and booking link.</div>
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:var(--bg-success);border-radius:var(--radius)">
-                <div style="font-size:12px;color:var(--text-success);font-weight:500"><i class="ti ti-phone" aria-hidden="true"></i> Active — handling missed calls</div>
-                <div style="width:8px;height:8px;border-radius:50%;background:#1baf7a"></div>
-              </div>
-              <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">3 calls handled today · 1 booking made</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="ai-bubble">
+      <div class="ai-bubble-text">💡 3 jobs in West Delhi today — batch them to save 38 min travel</div>
     </div>
   </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-imgs">
+    <div class="about-img-main" style="background:linear-gradient(135deg,#1a3a2a,#2a5a3a)">
+      <div style="text-align:center;padding:20px">
+        <div style="font-size:48px;margin-bottom:12px">⚡</div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--lime)">Ravi Kumar</div>
+        <div style="font-size:13px;color:var(--gray);margin-top:4px">Electrician, Delhi NCR</div>
+        <div style="margin-top:20px;background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--gray);margin-bottom:4px">Jobs completed this month</div>
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--lime)">34</div>
+          <div style="font-size:11px;color:var(--gray)">↑ 6 more than last month</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-img-sec" style="background:linear-gradient(135deg,#152a1e,#1a3a2a)">
+      <div style="text-align:center;padding:16px">
+        <div style="font-size:36px;margin-bottom:8px">🧾</div>
+        <div style="font-size:13px;font-weight:700;color:var(--white)">Invoice #034 sent</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px">₹3,776 via WhatsApp</div>
+        <div style="margin-top:12px;background:rgba(200,241,53,.1);border-radius:8px;padding:8px;font-size:11px;color:var(--lime);font-weight:600">✓ Payment confirmed</div>
+      </div>
+    </div>
+    <div class="about-badge">
+      <div class="about-badge-text">AI<br>ON<br>DUTY</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-eyebrow">About TradeMate AI</div>
+    <h2>Built for people who<br>work with their <em>hands</em></h2>
+    <p class="section-sub">Most business software is built for office workers. TradeMate AI is built for the electrician who can't answer calls on a live circuit, and the plumber whose hands are under a sink when a new customer rings.</p>
+    <div class="skills-list">
+      <div class="skill-item">
+        <div class="skill-header"><span>Customer acquisition & retention</span><span class="skill-pct">88%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Job scheduling efficiency</span><span class="skill-pct">92%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Invoice collection rate</span><span class="skill-pct">95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      </div>
+    </div>
+    <a href="#cta" class="btn-lime" style="display:inline-flex;padding:14px 28px;font-size:15px;border-radius:100px;font-family:'Inter',sans-serif">
+      Start your free trial
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-head">
+    <div>
+      <div class="section-eyebrow">Our Services</div>
+      <h2>Everything your<br>business <em>needs</em></h2>
+    </div>
+    <a href="#" class="btn-outline" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;text-decoration:none">
+      View all features
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-icon">👥</div>
+      <h3 class="svc-title">Social Media Marketing</h3>
+      <div class="svc-img-wrap" style="background:linear-gradient(135deg,#152a1e,#2a5a3a);display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center"><div style="font-size:32px">📱</div><div style="font-size:11px;color:var(--gray);margin-top:6px">Manage your digital presence</div></div>
+      </div>
+      <p class="svc-desc">Automatically collect customer reviews after every completed job and share them across platforms to build your reputation.</p>
+      <a href="#" class="svc-link">Learn more <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="svc-card featured">
+      <div class="svc-icon" style="background:rgba(15,31,23,0.15)">🤖</div>
+      <h3 class="svc-title" style="color:var(--dark)">AI Job Management</h3>
+      <div class="svc-img-wrap" style="background:rgba(15,31,23,0.15);border-color:rgba(15,31,23,0.2);display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center"><div style="font-size:32px">⚡</div><div style="font-size:11px;color:rgba(15,31,23,0.6);margin-top:6px">Smart scheduling + route planning</div></div>
+      </div>
+      <p class="svc-desc" style="color:rgba(15,31,23,0.75)">Books, cancels, and rearranges your jobs automatically. Batches nearby appointments to cut travel time and maximise your earning hours.</p>
+      <a href="#" class="svc-link" style="color:var(--dark);border-color:rgba(15,31,23,0.3)">Learn more <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-icon">📧</div>
+      <h3 class="svc-title">Invoice & Payments</h3>
+      <div class="svc-img-wrap" style="background:linear-gradient(135deg,#152a1e,#2a5a3a);display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center"><div style="font-size:32px">🧾</div><div style="font-size:11px;color:var(--gray);margin-top:6px">PDF invoices + payment tracking</div></div>
+      </div>
+      <p class="svc-desc">One-click PDF invoices with GST. Sent automatically via WhatsApp. Tracks who's paid and chases overdue amounts so you don't have to.</p>
+      <a href="#" class="svc-link">Learn more <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="why-img">
+    <div style="width:100%;height:100%;background:linear-gradient(135deg,#152a1e,#1a3a2a,#2a5a3a);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px">
+      <div style="font-size:56px;margin-bottom:20px">🔧</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);text-align:center;margin-bottom:8px">While you work,<br>we handle the office</div>
+      <div style="font-size:13px;color:var(--gray);text-align:center;max-width:220px">Zero missed calls. Zero forgotten appointments. Zero unpaid invoices.</div>
+      <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%">
+        <div style="background:var(--card);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--lime)">48%</div>
+          <div style="font-size:10px;color:var(--gray);margin-top:2px">Admin time saved</div>
+        </div>
+        <div style="background:var(--card);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--lime)">3x</div>
+          <div style="font-size:10px;color:var(--gray);margin-top:2px">More jobs per week</div>
+        </div>
+      </div>
+    </div>
+    <div class="why-badge">
+      <div class="why-badge-num">16+</div>
+      <div class="why-badge-label">Years of field experience<br>baked into the AI</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-eyebrow">Why Choose Us</div>
+    <h2>Why our clients think<br>we're <em>different</em></h2>
+    <p class="section-sub">Other apps are marketplaces that bring you leads. TradeMate AI is a business OS that handles everything that happens after the customer says yes.</p>
+    <div class="why-features">
+      <div class="why-feat">
+        <div class="why-feat-icon">🏆</div>
+        <div class="why-feat-title">Certified & reliable</div>
+        <div class="why-feat-desc">Built on FastAPI + SQLAlchemy — production-grade stack trusted by real businesses.</div>
+      </div>
+      <div class="why-feat">
+        <div class="why-feat-icon">📊</div>
+        <div class="why-feat-title">Proven results</div>
+        <div class="why-feat-desc">Tradespeople using TradeMate report 38% more revenue in their first month.</div>
+      </div>
+      <div class="why-feat">
+        <div class="why-feat-icon">🌐</div>
+        <div class="why-feat-title">Runs offline</div>
+        <div class="why-feat-desc">AI runs locally via Ollama — no internet needed on the job. Syncs when you're back.</div>
+      </div>
+      <div class="why-feat">
+        <div class="why-feat-icon">🔒</div>
+        <div class="why-feat-title">Your data, your machine</div>
+        <div class="why-feat-desc">No cloud AI means your customer data never leaves your device. Full privacy.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-head">
+    <div class="section-eyebrow" style="justify-content:center">Our Work Process</div>
+    <h2>Up and running in<br><em>four simple steps</em></h2>
+  </div>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Set up your profile</div>
+      <div class="step-desc">Add your trade, working hours, service area, and pricing. Takes under 5 minutes.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Connect your number</div>
+      <div class="step-desc">Forward your missed calls to TradeMate. The AI picks up, answers FAQs, and books jobs.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Work your jobs</div>
+      <div class="step-desc">Your daily schedule is ready each morning. Route-optimised, with reminders sent automatically.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Get paid faster</div>
+      <div class="step-desc">Invoices go out the moment a job is marked complete. Payments tracked in real time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="testi-head">
+    <div class="section-eyebrow" style="justify-content:center">What people say</div>
+    <h2>Real tradespeople,<br><em>real results</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">I used to lose 2–3 customers a week because I couldn't answer while working. TradeMate books them automatically now. My revenue went up ₹22,000 in the first month.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RK</div>
+        <div>
+          <div class="testi-name">Ravi Kumar</div>
+          <div class="testi-role">Electrician · Delhi NCR · 8 years</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">The invoice feature alone is worth it. I used to chase payments for weeks. Now the app sends a WhatsApp PDF the moment I finish a job. Collections improved by 40%.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">MS</div>
+        <div>
+          <div class="testi-name">Mohammed Shaikh</div>
+          <div class="testi-role">Plumber · Mumbai · 12 years</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">The AI told me to batch 3 jobs in the same colony on a Tuesday. I saved 90 minutes of travel. That's basically a free extra job each week — I was stunned.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SV</div>
+        <div>
+          <div class="testi-name">Suresh Verma</div>
+          <div class="testi-role">AC Technician · Bangalore · 6 years</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-head">
+    <div class="section-eyebrow" style="justify-content:center">Pricing</div>
+    <h2>Simple pricing,<br>no <em>surprises</em></h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-plan">Starter</div>
+      <div class="price-amount"><sup>₹</sup>0</div>
+      <div class="price-period">Free forever</div>
+      <ul class="price-features">
+        <li>Up to 20 jobs / month</li>
+        <li>Customer CRM (50 contacts)</li>
+        <li>Basic calendar view</li>
+        <li>Manual invoice generation</li>
+        <li>AI chat (10 queries/day)</li>
+      </ul>
+      <button class="btn-plan">Get started free</button>
+    </div>
+    <div class="price-card featured-plan">
+      <div class="popular-tag">Most popular</div>
+      <div class="price-plan">Professional</div>
+      <div class="price-amount"><sup>₹</sup>499</div>
+      <div class="price-period">per month · billed monthly</div>
+      <ul class="price-features">
+        <li>Unlimited jobs</li>
+        <li>Unlimited CRM contacts</li>
+        <li>AI receptionist (missed calls)</li>
+        <li>Auto WhatsApp invoices</li>
+        <li>Route optimisation</li>
+        <li>Analytics dashboard</li>
+        <li>Smart reminders</li>
+      </ul>
+      <button class="btn-plan">Start 14-day free trial</button>
+    </div>
+    <div class="price-card">
+      <div class="price-plan">Business</div>
+      <div class="price-amount"><sup>₹</sup>999</div>
+      <div class="price-period">per month · up to 3 staff</div>
+      <ul class="price-features">
+        <li>Everything in Professional</li>
+        <li>3 team member accounts</li>
+        <li>Multi-trade support</li>
+        <li>Inventory tracking</li>
+        <li>Expense management</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="btn-plan">Contact sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="section-eyebrow" style="justify-content:center">Get Started Today</div>
+    <h2>Stop losing jobs to<br><em>missed calls</em></h2>
+    <p>Join 200+ tradespeople who've taken back their time. No credit card. No setup fee. Running in under 10 minutes.</p>
+    <div class="cta-form">
+      <input type="email" placeholder="Enter your phone or email">
+      <a href="#" class="btn-lime" style="border-radius:100px;font-family:'Inter',sans-serif;text-decoration:none;padding:14px 24px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px">
+        Get early access
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <p class="cta-note">Free 14-day trial · No credit card required · Cancel anytime</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:0">
+        <div class="nav-logo-dot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0f1f17" stroke-width="3" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        TradeMate AI
+      </div>
+      <p>A business operating system for India's 50 million solo tradespeople. Built in 7 days. Runs locally. Works offline.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Roadmap</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 TradeMate AI · Built for India's tradespeople · MIT License</p>
+    <div class="footer-social">
+      <a href="#" class="social-btn">𝕏</a>
+      <a href="#" class="social-btn">in</a>
+      <a href="#" class="social-btn">gh</a>
+      <a href="#" class="social-btn">yt</a>
+    </div>
+  </div>
+</footer>
+
 <script>
-function showPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if(el) el.classList.add('active');
-  document.getElementById('page-title').textContent = name.charAt(0).toUpperCase() + name.slice(1).replace('-',' ');
-  if(name === 'analytics') setTimeout(renderChart, 50);
-}
-
-var calData = {5:3,9:2,12:1,14:4,17:2,19:3,22:1,24:2,25:1,26:2,27:4,28:2,30:1};
-var calCells = document.getElementById('cal-cells');
-var offset = 0;
-for(var i=1;i<=30;i++){
-  var cell = document.createElement('div');
-  cell.className = 'cal-cell' + (calData[i]?' has-jobs':'') + (i===27?' today':'');
-  cell.textContent = i;
-  if(i===1) cell.style.gridColumnStart = 1;
-  calCells.appendChild(cell);
-}
-
-var chartRendered = false;
-function renderChart() {
-  if(chartRendered) return;
-  chartRendered = true;
-  new Chart(document.getElementById('rev-chart'), {
-    type: 'bar',
-    data: {
-      labels: ['Jan','Feb','Mar','Apr','May','Jun'],
-      datasets: [{
-        label: 'Revenue (₹k)',
-        data: [52,61,58,71,74,87],
-        backgroundColor: '#2a78d6',
-        borderRadius: 4,
-        borderSkipped: false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { display: false }, ticks: { color: '#898781', font: { size: 11 } } },
-        y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#898781', font: { size: 11 }, callback: v => '₹' + v + 'k' } }
-      }
-    }
+// Ticker
+var tickerItems = ['AI Receptionist','Job Scheduling','Customer CRM','Invoice Generator','Route Optimisation','Smart Reminders','Analytics Dashboard','Voice Notes','Payment Tracking','Inventory Alerts'];
+var inner = document.getElementById('ticker-inner');
+var html = '';
+for(var i=0;i<4;i++){
+  tickerItems.forEach(function(t){
+    html += '<span class="ticker-item">'+t+'<span class="ticker-dot"></span></span>';
   });
 }
+inner.innerHTML = html;
 
-var aiReplies = {
-  'How much should I charge for rewiring a 2BHK?': 'For a 2BHK rewiring in Delhi, market rate is ₹8,000–₹12,000 depending on copper wire gauge and number of points. Your average for this job type is ₹9,200. I\'d suggest ₹9,500–₹10,000.',
-  'Which customers have outstanding payments?': 'Outstanding payments: Kavita Singh (₹3,800 — inverter service, 25 Jun), Amit Sharma (₹3,200 — today), and D.K. Exports (₹11,200 — overdue since 10 Jun). Want me to send a polite reminder to any of them?',
-  'Book an appointment for next Monday at 11 AM': 'Your next Monday (29 Jun) at 11 AM is free. Who is the customer and what\'s the job? I\'ll add it to the calendar and send them a confirmation.',
-  'Generate invoice for Amit Sharma': 'Invoice #INV-034 ready for Amit Sharma: Panel repair · ₹3,200 + GST (18%) = ₹3,776 total. Shall I send the PDF to his phone via WhatsApp?'
-};
+// Skill bar animation on scroll
+var fills = document.querySelectorAll('.skill-fill');
+var animated = false;
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting && !animated){
+      animated = true;
+      fills.forEach(function(f){
+        var w = f.style.width;
+        f.style.width = '0';
+        setTimeout(function(){f.style.width = w;},100);
+      });
+    }
+  });
+},{threshold:0.3});
+if(fills[0]) observer.observe(fills[0]);
 
-function askAI(q) {
-  var msgs = document.getElementById('chat-msgs');
-  var uDiv = document.createElement('div'); uDiv.className='msg msg-user'; uDiv.textContent=q; msgs.appendChild(uDiv);
+// Live job cycling
+var jobs = [
+  {initials:'AS',bg:'#1a3a4a',color:'#79c0ff',name:'Amit Sharma · Panel repair',sub:'10:00 AM · Rajouri Garden',badge:'b-progress',label:'In progress'},
+  {initials:'PG',bg:'#3a2a1a',color:'#fbbf24',name:'Priya Gupta · New wiring',sub:'12:30 PM · Karol Bagh',badge:'b-pending',label:'Pending'},
+  {initials:'SJ',bg:'#3a1a1a',color:'#f87171',name:'Suresh Jain · Power outage ⚡',sub:'2:00 PM · Rohini · PRIORITY',badge:'b-urgent',label:'Urgent'},
+  {initials:'MB',bg:'#1a3a2a',color:'#4ade80',name:'Meena Bajaj · MCB fitting',sub:'4:30 PM · Pitampura',badge:'b-done',label:'Scheduled'},
+  {initials:'RV',bg:'#1a2a3a',color:'#818cf8',name:'Ramesh Verma · Rewiring (3BHK)',sub:'Tomorrow 9:00 AM · Janakpuri',badge:'b-pending',label:'Booked'},
+  {initials:'KS',bg:'#2a1a3a',color:'#c084fc',name:'Kavita Singh · Inverter service',sub:'Tomorrow 11:00 AM · Ashok Vihar',badge:'b-done',label:'Confirmed'}
+];
+
+var currentIdx = 0;
+function cycleJob(){
+  var list = document.getElementById('jobs-list');
+  if(!list) return;
+  var items = list.querySelectorAll('.job-item');
+  var replaceIdx = currentIdx % items.length;
+  var nextJob = jobs[(currentIdx + jobs.length) % jobs.length];
+  var item = items[replaceIdx];
+  item.style.opacity = '0';
+  item.style.transform = 'translateX(8px)';
   setTimeout(function(){
-    var aDiv = document.createElement('div'); aDiv.className='msg msg-ai';
-    aDiv.textContent = aiReplies[q] || 'Let me check that for you…';
-    msgs.appendChild(aDiv);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 600);
-  msgs.scrollTop = msgs.scrollHeight;
-  showPage('assistant', document.querySelector('.nav-item:last-of-type'));
+    item.querySelector('.job-avatar').style.background = nextJob.bg;
+    item.querySelector('.job-avatar').style.color = nextJob.color;
+    item.querySelector('.job-avatar').textContent = nextJob.initials;
+    item.querySelector('.job-name').textContent = nextJob.name;
+    item.querySelector('.job-sub').textContent = nextJob.sub;
+    var badge = item.querySelector('.job-badge');
+    badge.className = 'job-badge ' + nextJob.badge;
+    badge.textContent = nextJob.label;
+    item.style.transition = 'opacity .3s, transform .3s';
+    item.style.opacity = '1';
+    item.style.transform = 'translateX(0)';
+  },300);
+  currentIdx = (currentIdx + 1) % jobs.length;
 }
+setInterval(cycleJob, 2800);
 
-function sendChat() {
-  var inp = document.getElementById('chat-input');
-  var q = inp.value.trim(); if(!q) return;
-  inp.value = '';
-  var msgs = document.getElementById('chat-msgs');
-  var uDiv = document.createElement('div'); uDiv.className='msg msg-user'; uDiv.textContent=q; msgs.appendChild(uDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(function(){
-    var aDiv = document.createElement('div'); aDiv.className='msg msg-ai';
-    aDiv.textContent = aiReplies[q] || 'I can help with that. Could you give me a bit more detail — are you asking about a specific customer or a new job?';
-    msgs.appendChild(aDiv);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 700);
-}
+// Step hover counter
+document.querySelectorAll('.step').forEach(function(s){
+  s.addEventListener('mouseenter',function(){
+    s.querySelector('.step-num').style.background = 'var(--lime)';
+    s.querySelector('.step-num').style.color = 'var(--dark)';
+  });
+  s.addEventListener('mouseleave',function(){
+    s.querySelector('.step-num').style.background = 'var(--card)';
+    s.querySelector('.step-num').style.color = 'var(--lime)';
+  });
+});
+
+// Nav scroll effect
+window.addEventListener('scroll',function(){
+  var nav = document.querySelector('nav');
+  if(window.scrollY > 40){
+    nav.style.background = 'rgba(15,31,23,0.98)';
+    nav.style.boxShadow = '0 1px 0 rgba(200,241,53,0.15)';
+  } else {
+    nav.style.background = 'rgba(15,31,23,0.92)';
+    nav.style.boxShadow = 'none';
+  }
+});
 </script>
+</body>
+</html>
